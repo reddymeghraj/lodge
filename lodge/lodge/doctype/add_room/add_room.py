@@ -16,7 +16,7 @@ class AddRoom(Document):
 def check_roomno(r):
 	q = frappe.db.sql("""select name from `tabAdd Room` where room_no=%s""",(r))
 	if q:
-		frappe.msgprint("Entered Room no already exists")
+		#frappe.msgprint("Entered Room no already exists")
 		return 1
 	else:
 		return 2
