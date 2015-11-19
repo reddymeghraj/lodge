@@ -49,10 +49,10 @@ def get_room_details(room):
 
 @frappe.whitelist()
 def get_free_room():
-	s=frappe.db.sql("""select name from `tabAdd Room` where r_status='Free'""")
+	s=frappe.db.sql("""select room_no from `tabAdd Room` where r_status='Free'""")
 	return (s)
 
 @frappe.whitelist()
 def get_details(rm_id):
-	s1=frappe.db.sql("""select room_no,building_name,class_name from `tabAdd Room` where name=%s""",(rm_id))
+	s1=frappe.db.sql("""select name,building_name,class_name from `tabAdd Room` where room_no=%s""",(rm_id))
 	return(s1)
