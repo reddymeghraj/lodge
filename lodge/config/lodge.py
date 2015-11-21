@@ -42,6 +42,11 @@ def get_data():
 					"name": "Class",
 					"description": _("Class")
 				},
+				{
+					"type": "doctype",
+					"name": "Duplicate Bill",
+					"description": _("Duplicate Bill")
+				},
 			]
 		},
 		{
