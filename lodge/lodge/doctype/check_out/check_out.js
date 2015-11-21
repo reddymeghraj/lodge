@@ -96,3 +96,16 @@ cur_frm.cscript.payment_type=function(doc,cdt,cdn)
 		hide_field('cheque_no');
 	}
 }
+
+cur_frm.cscript.discount=function(doc,cdt,cdn)
+{
+
+	var lodge_bill=doc.lodge_bill;
+	var discount = doc.discount;
+	var t= doc.total
+	var amt = (lodge_bill*10)/100;
+	var a = (lodge_bill-amt);
+	var b =(t-amt);
+	cur_frm.set_value('lodge_bill_after_discount',a);
+	cur_frm.set_value('total',b);
+}
