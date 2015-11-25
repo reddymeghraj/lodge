@@ -26,6 +26,8 @@ class RoomChange(Document):
 		if q:
 			q1=frappe.db.sql("""update `tabBooking` set flag=2 where allocated_room=%s and room_no=%s and customer_name=%s""",(q[0][0],q[0][1],q[0][2]))
 			q2=frappe.db.sql("""update `tabAdd Room` set r_status='Free' where name=%s and room_no=%s""",(q[0][0],q[0][1]))
+		q5 = frappe.db.sql("""select address,occupancy,mobile_no from `tabBooking` where customer_name=%s""",(cust))
+		frappe.msgprint(q5)
 		q3=frappe.db.sql("""select max(cast(name as int)) from `tabBooking`""")[0][0]
 		if q3:
 			name=int(q3)+1
@@ -33,7 +35,7 @@ class RoomChange(Document):
 			name=1
 		q4=frappe.db.sql("""insert into `tabBooking` 
 		set name=%s,date=%s,customer_name=%s,allocated_room=%s,room_no=%s,building_name=%s,
-		class=%s,rent=%s,room_status='Allocated',flag=1""",(name,dt,cust,al_room,room,b_name,cls,rent))
+		class=%s,rent=%s,room_status='Allocated',flag=1,address=%s,occupancy=%s,mobile_no=%s""",(name,dt,cust,al_room,room,b_name,cls,rent,q5[0][0],q5[0][1],q5[0][2]))
 	def on_trash(self):
 		cust=self.customer
 		q=frappe.db.sql("""select allocated_room,room_no,customer_name from `tabBooking` where name=%s""",(cust))

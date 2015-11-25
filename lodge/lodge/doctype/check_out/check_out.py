@@ -67,9 +67,8 @@ def get_bill(d,r):
 				day1=day1+1
 		else:
 			day1 = 1
-		#frappe.msgprint(day1)
 		amt1=(day1*rent1)
-		q10=frappe.db.sql("""select customer_name from `tabBooking` where customer_name=%s and flag=2""",(q8[0][1]))	
+		q10=frappe.db.sql("""select customer_name from `tabBooking` where customer_name=%s and flag=2""",(q8[0][1]))
 		if(len(q10)>1): #fOR REPEATABLE NAMES OF CUSTOMER
 			q9=frappe.db.sql("""select name,customer_name,date,rent from `tabBooking` where room_no=%s and customer_name=%s and flag=2""",(r,c))
 			if q9:
@@ -98,6 +97,7 @@ def get_bill(d,r):
 			else:
 				day2=0
 				amt2=0
+			#frappe.msgprint(amt2)
 		else:
 			q9=frappe.db.sql("""select name,customer_name,date,rent from `tabBooking` where customer_name=%s and flag=2""",(c))
 			if q9:
@@ -126,25 +126,26 @@ def get_bill(d,r):
 			else:
 				day2=0
 				amt2=0
+			#frappe.msgprint(amt2)
 		days=(day1+day2)
 		amt=(amt1+amt2)
 		#--------------------------------------------------------------------------------------
 		#-----------Bar Bill-------------------------------------------------------------------
-		q=frappe.db.sql("""select room_no from `tabBooking` where customer_name=%s and date=%s and flag=2""",(c,bk_date))
+		q=frappe.db.sql("""select name,room_no from `tabBooking` where customer_name=%s and date=%s and flag=2""",(c,bk_date))
 		if q:
-			q1=frappe.db.sql("""select total_amount from `tabOrder Item` where customer_name=%s and select_room=%s order by order_id desc limit 1""",(c,q[0][0]))
+			q1=frappe.db.sql("""select total_amount from `tabLodge Item` where customer_name=%s and select_room=%s order by order_id desc limit 1""",(c,q[0][1]))
 			if q1:
 				b1=int(q1[0][0])
 			else:
 				b1=0
 		else:
 			b1=0
-		#t=frappe.db.sql("""select total_amount from `tabOrder Item` where customer_name=%s and select_room=%s order by order_id desc limit 1""",(c,r))
-		#if t:
-		#	b2=int(t[0][0])
-		#else:
-		#	b2=0
-		#bar=int(b1)+int(b2)
+		t=frappe.db.sql("""select total_amount from `tabLodge Item` where customer_name=%s and select_room=%s order by order_id desc limit 1""",(c,r))
+		if t:
+			b2=int(t[0][0])
+		else:
+			b2=0
+		bar=int(b1)+int(b2)
 		#--------------------------------------------------------------------------------------
 		#-----------Hotel Bill-------------------------------------------------------------------
 		#q0=frappe.db.sql("""select room_no from `tabBooking` where customer_name=%s and date=%s and flag=2""",(c,bk_date))
@@ -166,10 +167,10 @@ def get_bill(d,r):
 		#------------------------------------------------------------------------------------------
 		#----------Total Bill----------------------------------------------------------------------
 		#add= bar+hotel+int(amt)
-		add= int(amt)
-		
+		add= int(bar)+int(amt)
 		#result=[bar,hotel,amt,add,days,al_rm,rm_no,bldg_no,cls,adrs,ocpancy,c_id,bk_date,c]
-		result=[0,0,amt,add,days,al_rm,rm_no,bldg_no,cls,adrs,ocpancy,c_id,bk_date,c]
+		result=[bar,0,amt,add,days,al_rm,rm_no,bldg_no,cls,adrs,ocpancy,c_id,bk_date,c]
+		#frappe.msgprint(result)
 		return result
 @frappe.whitelist()
 def get_bill_no():
