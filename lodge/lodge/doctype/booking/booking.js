@@ -31,22 +31,7 @@ cur_frm.cscript.mobile_no=function(doc,cdt,cdn)
 		}
 	});
 }*/
-/*cur_frm.cscript.id_number=function(doc,cdt,cdn)
-{
-	var id=doc.id_number
-	frappe.call({
-		method:'lodge.lodge.doctype.booking.booking.get_image',
-		args:{img:id},
-		callback:function(r)
-		{
-			var doclist=frappe.model.sync(r.message)
-			set_field_options('test',doclist[0])
-			cur_frm.set_value('image_path',doclist[1])
-			cur_frm.set_value('at_image',doclist[1])
-		}
-	})
-	
-}*/
+
 cur_frm.cscript.onload=function(doc,cdt,cdn)
 {
 	/*var id=doc.id_number
