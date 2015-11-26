@@ -1,20 +1,3 @@
-/*cur_frm.cscript.to_date=function(doc,cdt,cdn)
-{
-	var fromdate=doc.from_date;
-	var todate=doc.to_date;
-
-	var fdate=fromdate.split("-");
-	var tdate=todate.split("-");
-
-	var fday= fdate[2];
-	var tday=tdate[2];
-	if (todate>=fromdate)
-		{
-			var diff=tday-fday;
-			cur_frm.set_value('days',diff);
-		}
-	else alert("To Date must be greater than From Date")
-}*/
 cur_frm.cscript.mobile_no=function(doc,cdt,cdn)
 {
 	var num=doc.mobile_no;
