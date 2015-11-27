@@ -18,6 +18,11 @@ from frappe.model.document import Document
 
 
 class CheckOut(Document):
+	def on_submit(self):
+		alc_room = self.allocated_room
+		customer = self.select_customer
+		bk_id = self.customer_name
+		q = frappe.db.sql("""update `tabBooking` set room_status='Free' where name=%s""",(bk_id))  
 	def validate(self):
 		user = frappe.session.user
 		self.receptionist=get_user_fullname(user)
@@ -38,7 +43,7 @@ def get_bill(d,r):
 	#a = datetime.strptime(d, "%Y-%m-%d") #checkout date
 	date_format = "%Y-%m-%d %H:%M:%S"
 	a = datetime.strptime(d, date_format) #checkout date
-	q8=frappe.db.sql("""select name,customer_name,date,rent,allocated_room,room_no,building_name,class,address,occupancy from `tabBooking` where room_no=%s and flag=1""",(r))
+	q8=frappe.db.sql("""select name,customer_name,date,rent,allocated_room,room_no,building_name,class,address,occupancy from `tabBooking` where room_no=%s and flag=1 and room_status='Allocated'""",(r))
 	if q8:
 		c=q8[0][1]
 		c_id=q8[0][0]
@@ -184,7 +189,7 @@ def get_bill_no():
 @frappe.whitelist()
 def get_customer_name():
 	list=[]
-	q=frappe.db.sql("""select b.room_no from `tabBooking` b where b.flag=1""")
+	q=frappe.db.sql("""select b.room_no from `tabBooking` b where b.flag=1 and b.room_status='Allocated'""")
 	if q:
 		#for i in range(0, len(q)):
 		#	list.append(q[i])
@@ -194,7 +199,7 @@ def get_customer_name():
 		#		list.append(q0[j])
 		return q
 	else:
-		q1=frappe.db.sql("""select b.room_no from `tabBooking` b where b.flag=1""")
+		q1=frappe.db.sql("""select b.room_no from `tabBooking` b where b.flag=1 and b.room_status='Allocated'""")
 		return (q1)
 
 @frappe.whitelist()
