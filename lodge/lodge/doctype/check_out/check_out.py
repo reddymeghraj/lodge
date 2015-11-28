@@ -43,7 +43,7 @@ def get_bill(d,r):
 	#a = datetime.strptime(d, "%Y-%m-%d") #checkout date
 	date_format = "%Y-%m-%d %H:%M:%S"
 	a = datetime.strptime(d, date_format) #checkout date
-	q8=frappe.db.sql("""select name,customer_name,date,rent,allocated_room,room_no,building_name,class,address,occupancy from `tabBooking` where room_no=%s and flag=1 and room_status='Allocated'""",(r))
+	q8=frappe.db.sql("""select name,customer_name,date,rent,allocated_room,room_no,building_name,class,address,occupancy,advance_amount from `tabBooking` where room_no=%s and flag=1 and room_status='Allocated'""",(r))
 	if q8:
 		c=q8[0][1]
 		c_id=q8[0][0]
@@ -56,6 +56,7 @@ def get_bill(d,r):
 		cls=q8[0][7]
 		adrs=q8[0][8]
 		ocpancy=q8[0][9]
+		advance = q8[0][10]
 		#z = datetime.strptime(rmch_date, "%Y-%m-%d")
 		date_format = "%Y-%m-%d %H:%M:%S"
 		z = datetime.strptime(rmch_date, date_format)
@@ -174,7 +175,7 @@ def get_bill(d,r):
 		#add= bar+hotel+int(amt)
 		add= int(bar)+int(amt)
 		#result=[bar,hotel,amt,add,days,al_rm,rm_no,bldg_no,cls,adrs,ocpancy,c_id,bk_date,c]
-		result=[bar,0,amt,add,days,al_rm,rm_no,bldg_no,cls,adrs,ocpancy,c_id,bk_date,c]
+		result=[bar,0,amt,add,days,al_rm,rm_no,bldg_no,cls,adrs,ocpancy,advance,c_id,bk_date,c]
 		#frappe.msgprint(result)
 		return result
 @frappe.whitelist()

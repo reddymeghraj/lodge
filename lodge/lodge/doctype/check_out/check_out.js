@@ -26,21 +26,24 @@ cur_frm.cscript.allocated_room=function(doc,cdt,cdn)
 			cur_frm.set_value("class",doclist[8]);
 			cur_frm.set_value("address",doclist[9]);
 			cur_frm.set_value("occupancy",doclist[10]);
-			cur_frm.set_value("customer_name",doclist[11]);
-			cur_frm.set_value("in_date",doclist[12]);
-			cur_frm.set_value("select_customer",doclist[13])
+			cur_frm.set_value("advance_taken",doclist[11])
+			cur_frm.set_value("customer_name",doclist[12]);
+			cur_frm.set_value("in_date",doclist[13]);
+			cur_frm.set_value("select_customer",doclist[14])
 		}
 	});
 	
 }
 cur_frm.cscript.service_tax=function(doc,cdt,cdn)
 {
-	var t= doc.total
-	var l=doc.luxury_tax
-	var s= doc.service_tax
-	var a = doc.extra_person_amount
-	var gtotal=t+l+s+a;
-	cur_frm.set_value("total",gtotal);
+	var t= parseInt(doc.total);
+	var l=parseInt(doc.luxury_tax);
+	var s= parseInt(doc.service_tax);
+	var a = parseInt(doc.extra_person_amount);
+	var adv = parseInt(doc.advance_taken);
+	var gtotal=parseInt(t+l+s+a);
+	var x= parseInt(gtotal- adv)
+	cur_frm.set_value("total",x);
 	frappe.call({
 		method:'lodge.lodge.doctype.check_out.check_out.get_money_in_words',
 		args:{n:gtotal},
@@ -105,7 +108,7 @@ cur_frm.cscript.discount=function(doc,cdt,cdn)
 	var t= doc.total
 	var amt = (lodge_bill*10)/100;
 	var a = (lodge_bill-amt);
-	var b =(t-amt);
+	var b =(t-amt)
 	cur_frm.set_value('lodge_bill_after_discount',a);
 	cur_frm.set_value('total',b);
 }
