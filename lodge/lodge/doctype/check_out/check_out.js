@@ -53,7 +53,6 @@ cur_frm.cscript.service_tax=function(doc,cdt,cdn)
 		}
 	})
 }
-
 //Bill No Generation
 cur_frm.cscript.onload=function(doc,cdt,cdn)
 {
